@@ -12,7 +12,6 @@ conda create -n student_dropout_ml python=3.11 -y
 conda activate student_dropout_ml
 pip install -r requirements.txt
 python -m ipykernel install --user --name student_dropout_ml --display-name "Python (student_dropout_ml)"
-conda activate student_dropout_ml
 python environment_test.py
 
 # Kalo berhasil bakal ada output:
@@ -25,6 +24,7 @@ python environment_test.py
 
 # 3. Dilakukan setiap mulai project
 
+git pull
 conda activate student_dropout_ml
 
 ===========================================================================
