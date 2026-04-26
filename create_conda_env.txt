@@ -1,4 +1,5 @@
 # 1. Pastiin ada Python, Streamlit, Jupyter & Conda udh ada
+
 python --version
 streamlit --version
 jupyter --version
@@ -6,6 +7,7 @@ jupyter --version
 ==========================================================================
 
 # 2. Create and Test Conda Env
+
 conda create -n student_dropout_ml python=3.11 -y
 conda activate student_dropout_ml
 pip install -r requirements.txt
@@ -21,10 +23,12 @@ python environment_test.py
 
 ===========================================================================
 
-# 3. Aktivasi Conda Environment setiap mulai project (+ mau jalanin app)
+# 3. Dilakukan setiap mulai project
+
 conda activate student_dropout_ml
 
 ===========================================================================
 
 # 4. Jalanin app
+
 streamlit run app/app.py
