@@ -1,0 +1,30 @@
+# 1. Pastiin ada Python, Streamlit, Jupyter & Conda udh ada
+python --version
+streamlit --version
+jupyter --version
+
+==========================================================================
+
+# 2. Create and Test Conda Env
+conda create -n student_dropout_ml python=3.11 -y
+conda activate student_dropout_ml
+pip install -r requirements.txt
+python -m ipykernel install --user --name student_dropout_ml --display-name "Python (student_dropout_ml)"
+conda activate student_dropout_ml
+python environment_test.py
+
+# Kalo berhasil bakal ada output:
+# Environment is ready.
+# Pandas: 3.0.2
+# NumPy: 2.4.4
+# Scikit-learn: 1.8.0
+
+===========================================================================
+
+# 3. Aktivasi Conda Environment setiap mulai project (+ mau jalanin app)
+conda activate student_dropout_ml
+
+===========================================================================
+
+# 4. Jalanin app
+streamlit run app/app.py

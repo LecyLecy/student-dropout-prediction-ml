@@ -1,0 +1,66 @@
+Commit Message Rules
+
+==================================
+
+Use this format:
+
+<type>: <short description>
+
+==================================
+
+Allowed types:
+
+init
+For initial project setup.
+
+feat
+For adding a new feature.
+
+fix
+For fixing bugs or errors.
+
+docs
+For updating documentation, README, proposal, or notes.
+
+data
+For adding or updating dataset-related files.
+
+model
+For training, saving, or updating machine learning models.
+
+app
+For Streamlit application changes.
+
+eda
+For exploratory data analysis updates.
+
+refactor
+For restructuring or cleaning code without changing behavior.
+
+test
+For adding or updating testing files.
+
+chore
+For maintenance tasks such as requirements, gitignore, or folder cleanup.
+
+==================================
+
+Examples:
+
+init: setup project structure and environment
+
+docs: add project proposal and final project criteria
+
+data: add raw student dropout dataset
+
+eda: add initial target distribution analysis
+
+model: train baseline logistic regression model
+
+model: add feature selection pipeline
+
+app: create initial Streamlit prediction interface
+
+fix: resolve model loading path error
+
+chore: update gitignore and requirements
