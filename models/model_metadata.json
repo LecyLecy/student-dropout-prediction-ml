@@ -7,28 +7,24 @@
     },
     "positive_class": "Dropout",
     "positive_class_value": 1,
-    "mvp_feature_count": 10,
+    "mvp_feature_count": 8,
     "mvp_features": [
         "Tuition fees up to date",
         "Course",
         "Scholarship holder",
-        "Application mode",
         "Gender",
         "Debtor",
         "Mother's qualification",
         "Mother's occupation",
-        "Unemployment rate",
         "Age at enrollment"
     ],
     "continuous_features": [
-        "Age at enrollment",
-        "Unemployment rate"
+        "Age at enrollment"
     ],
     "categorical_features": [
         "Tuition fees up to date",
         "Course",
         "Scholarship holder",
-        "Application mode",
         "Gender",
         "Debtor",
         "Mother's qualification",
@@ -45,11 +41,11 @@
         },
         {
             "Model": "MVP Model",
-            "Accuracy": 0.7713498622589532,
-            "Precision": 0.736,
-            "Recall": 0.647887323943662,
-            "F1-Score": 0.6891385767790262,
-            "ROC-AUC": 0.8541839270919636
+            "Accuracy": 0.7727272727272727,
+            "Precision": 0.7351778656126482,
+            "Recall": 0.6549295774647887,
+            "F1-Score": 0.6927374301675978,
+            "ROC-AUC": 0.8542715569434707
         }
     ]
 }

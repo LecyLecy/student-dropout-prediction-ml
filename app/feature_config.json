@@ -1,0 +1,150 @@
+{
+  "features": [
+    "Tuition fees up to date",
+    "Course",
+    "Scholarship holder",
+    "Gender",
+    "Debtor",
+    "Mother's qualification",
+    "Mother's occupation",
+    "Age at enrollment"
+  ],
+  "feature_labels": {
+    "Tuition fees up to date": "Tuition Payment Status",
+    "Course": "Study Program / Major",
+    "Scholarship holder": "Scholarship Status",
+    "Gender": "Gender",
+    "Debtor": "Debtor Status",
+    "Mother's qualification": "Mother's Education Level",
+    "Mother's occupation": "Mother's Occupation",
+    "Age at enrollment": "Age at Enrollment"
+  },
+  "feature_descriptions": {
+    "Tuition fees up to date": "Whether the student's tuition payment is up to date.",
+    "Course": "The student's study program or major, not individual semester subjects.",
+    "Scholarship holder": "Whether the student receives a scholarship.",
+    "Application mode": "The admission pathway used by the student.",
+    "Gender": "The student's gender.",
+    "Debtor": "Whether the student has unpaid financial obligations (outside of school).",
+    "Mother's qualification": "The mother's highest education level.",
+    "Mother's occupation": "The mother's occupation category.",
+    "Unemployment rate": "The macroeconomic unemployment rate related to the student's enrollment context. In a real system, this should ideally be filled automatically.",
+    "Age at enrollment": "The student's age when enrolling."
+  },
+  "numeric_inputs": {
+    "Unemployment rate": {
+      "min_value": 0.0,
+      "max_value": 25.0,
+      "default_value": 11.63,
+      "step": 0.1
+    },
+    "Age at enrollment": {
+      "min_value": 16,
+      "max_value": 80,
+      "default_value": 18,
+      "step": 1
+    }
+  },
+  "value_mappings": {
+    "Tuition fees up to date": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "Scholarship holder": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "Debtor": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "Gender": {
+      "0": "Female",
+      "1": "Male"
+    },
+    "Course": {
+      "1": "Biofuel Production Technologies",
+      "2": "Animation and Multimedia Design",
+      "3": "Social Service Evening Program",
+      "4": "Agronomy",
+      "5": "Communication Design",
+      "6": "Veterinary Nursing",
+      "7": "Informatics Engineering",
+      "8": "Equinculture",
+      "9": "Management",
+      "10": "Social Service",
+      "11": "Tourism",
+      "12": "Computer Science",
+      "13": "Oral Hygiene",
+      "14": "Advertising and Marketing Management",
+      "15": "Journalism and Communication",
+      "16": "Basic Education",
+      "17": "Management Evening Program"
+    },
+    "Mother's qualification": {
+      "1": "Secondary education",
+      "2": "Higher education - bachelor's degree",
+      "3": "Higher education - degree",
+      "4": "Higher education - master's degree",
+      "5": "Higher education - doctorate",
+      "6": "Frequency of higher education",
+      "7": "12th year of schooling not completed",
+      "8": "11th year of schooling not completed",
+      "9": "7th year old schooling",
+      "10": "Other 11th year schooling",
+      "11": "10th year schooling",
+      "12": "General commerce course",
+      "13": "Basic education 3rd cycle",
+      "14": "Technical-professional course",
+      "15": "7th year of schooling",
+      "16": "2nd cycle general high school course",
+      "17": "9th year of schooling not completed",
+      "18": "8th year of schooling",
+      "19": "Unknown education level",
+      "20": "Cannot read or write",
+      "21": "Can read without formal primary education",
+      "22": "Basic education 1st cycle",
+      "23": "Basic education 2nd cycle",
+      "24": "Technological specialization course",
+      "25": "Higher education - degree 1st cycle",
+      "26": "Specialized higher studies course",
+      "27": "Professional higher technical course",
+      "28": "Higher education - master's degree 2nd cycle",
+      "29": "Higher education - doctorate 3rd cycle"
+    },
+    "Mother's occupation": {
+      "1": "Student",
+      "2": "Executive, legislative, or senior manager",
+      "3": "Intellectual and scientific specialist",
+      "4": "Intermediate level technician or professional",
+      "5": "Administrative staff",
+      "6": "Personal service, security, or sales worker",
+      "7": "Skilled agriculture, fisheries, or forestry worker",
+      "8": "Skilled industry, construction, or craft worker",
+      "9": "Machine operator or assembly worker",
+      "10": "Unskilled worker",
+      "11": "Armed forces profession",
+      "12": "Other situation",
+      "13": "Unknown occupation",
+      "14": "Armed forces officer",
+      "15": "Armed forces sergeant",
+      "16": "Other armed forces personnel",
+      "17": "Administrative or commercial service director",
+      "18": "Hotel, catering, trade, or service director",
+      "19": "Physical science, mathematics, or engineering specialist",
+      "20": "Health professional",
+      "21": "Teacher",
+      "22": "Finance, accounting, administration, or public relations specialist",
+      "23": "Science or engineering intermediate technician",
+      "24": "Health intermediate technician",
+      "25": "Legal, social, sports, or cultural intermediate technician",
+      "26": "Information and communication technology technician",
+      "27": "Office worker, secretary, or data processing operator",
+      "28": "Accounting, statistical, financial, or registry operator",
+      "29": "Other administrative support staff",
+      "30": "Personal service worker",
+      "31": "Seller",
+      "32": "Personal care worker"
+    }
+  }
+}

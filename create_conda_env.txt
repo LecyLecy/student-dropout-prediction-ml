@@ -29,12 +29,15 @@ conda activate student_dropout_ml
 
 ===========================================================================
 
-# 4. JDilakukan setelah suatu miles stone
+# 4. Dilakukan setelah suatu miles stone
 
-streamlit run app/app.py
+git add .
+git commit -m {message}
+git pusb
 
 ===========================================================================
 
 # 5. Jalanin app
 
+conda activate student_dropout_ml
 streamlit run app/app.py
