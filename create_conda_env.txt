@@ -29,6 +29,12 @@ conda activate student_dropout_ml
 
 ===========================================================================
 
-# 4. Jalanin app
+# 4. JDilakukan setelah suatu miles stone
+
+streamlit run app/app.py
+
+===========================================================================
+
+# 5. Jalanin app
 
 streamlit run app/app.py
