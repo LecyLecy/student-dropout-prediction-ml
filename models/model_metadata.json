@@ -1,0 +1,55 @@
+{
+    "model_name": "Final MVP Logistic Regression Model",
+    "base_model": "Logistic Regression (Baseline)",
+    "target_mapping": {
+        "Graduate": 0,
+        "Dropout": 1
+    },
+    "positive_class": "Dropout",
+    "positive_class_value": 1,
+    "mvp_feature_count": 10,
+    "mvp_features": [
+        "Tuition fees up to date",
+        "Course",
+        "Scholarship holder",
+        "Application mode",
+        "Gender",
+        "Debtor",
+        "Mother's qualification",
+        "Mother's occupation",
+        "Unemployment rate",
+        "Age at enrollment"
+    ],
+    "continuous_features": [
+        "Age at enrollment",
+        "Unemployment rate"
+    ],
+    "categorical_features": [
+        "Tuition fees up to date",
+        "Course",
+        "Scholarship holder",
+        "Application mode",
+        "Gender",
+        "Debtor",
+        "Mother's qualification",
+        "Mother's occupation"
+    ],
+    "evaluation": [
+        {
+            "Model": "Full Model",
+            "Accuracy": 0.7617079889807162,
+            "Precision": 0.7126436781609196,
+            "Recall": 0.6549295774647887,
+            "F1-Score": 0.6825688073394496,
+            "ROC-AUC": 0.8516107959977057
+        },
+        {
+            "Model": "MVP Model",
+            "Accuracy": 0.7713498622589532,
+            "Precision": 0.736,
+            "Recall": 0.647887323943662,
+            "F1-Score": 0.6891385767790262,
+            "ROC-AUC": 0.8541839270919636
+        }
+    ]
+}
