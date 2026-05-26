@@ -1,51 +1,66 @@
 {
-    "model_name": "Final MVP Logistic Regression Model",
-    "base_model": "Logistic Regression (Baseline)",
+    "model_name": "Final Student Dropout Prediction Model",
+    "base_model": "Logistic Regression",
     "target_mapping": {
         "Graduate": 0,
         "Dropout": 1
     },
     "positive_class": "Dropout",
     "positive_class_value": 1,
-    "mvp_feature_count": 8,
+    "mvp_feature_count": 10,
     "mvp_features": [
-        "Tuition fees up to date",
+        "Marital status",
         "Course",
-        "Scholarship holder",
-        "Gender",
-        "Debtor",
+        "Previous qualification",
         "Mother's qualification",
-        "Mother's occupation",
-        "Age at enrollment"
+        "Father's qualification",
+        "Displaced",
+        "Educational special needs",
+        "Gender",
+        "Age at enrollment",
+        "International"
     ],
     "continuous_features": [
         "Age at enrollment"
     ],
     "categorical_features": [
-        "Tuition fees up to date",
+        "Marital status",
         "Course",
-        "Scholarship holder",
-        "Gender",
-        "Debtor",
+        "Previous qualification",
         "Mother's qualification",
-        "Mother's occupation"
+        "Father's qualification",
+        "Displaced",
+        "Educational special needs",
+        "Gender",
+        "International"
+    ],
+    "selection_metric": "F1-Score",
+    "validation_results": [
+        {
+            "Model": "Logistic Regression",
+            "Accuracy": 0.6983471074380165,
+            "Precision": 0.6616915422885572,
+            "Recall": 0.46830985915492956,
+            "F1-Score": 0.5484536082474227,
+            "ROC-AUC": 0.7497132113950673
+        },
+        {
+            "Model": "Random Forest",
+            "Accuracy": 0.6584022038567493,
+            "Precision": 0.5737704918032787,
+            "Recall": 0.49295774647887325,
+            "F1-Score": 0.5303030303030303,
+            "ROC-AUC": 0.6876473774775349
+        }
     ],
     "evaluation": [
         {
-            "Model": "Full Model",
-            "Accuracy": 0.7617079889807162,
-            "Precision": 0.7126436781609196,
-            "Recall": 0.6549295774647887,
-            "F1-Score": 0.6825688073394496,
-            "ROC-AUC": 0.8516107959977057
-        },
-        {
-            "Model": "MVP Model",
-            "Accuracy": 0.7727272727272727,
-            "Precision": 0.7351778656126482,
-            "Recall": 0.6549295774647887,
-            "F1-Score": 0.6927374301675978,
-            "ROC-AUC": 0.8542715569434707
+            "Model": "Final Test Evaluation",
+            "Accuracy": 0.7038567493112947,
+            "Precision": 0.6408163265306123,
+            "Recall": 0.5528169014084507,
+            "F1-Score": 0.5935727788279774,
+            "ROC-AUC": 0.7591891848830541
         }
     ]
 }

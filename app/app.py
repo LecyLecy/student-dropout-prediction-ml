@@ -53,7 +53,6 @@ def normalize_category_value(value):
 def get_fallback_label(feature):
     """Fallback label for encoded values not listed in feature_config.json."""
     fallback_labels = {
-        "Application mode": "Other admission pathway",
         "Course": "Other study program",
         "Mother's qualification": "Other education level",
         "Father's qualification": "Other education level",
@@ -151,7 +150,7 @@ st.title("🎓 Student Dropout Prediction")
 
 st.write(
     "This MVP predicts whether a student is more likely to **Graduate** or **Dropout** "
-    "using selected early non-academic features."
+    "using selected early enrollment and background features."
 )
 
 st.info(

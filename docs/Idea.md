@@ -1,28 +1,50 @@
 # Early Student Dropout Prediction Idea
 
-_Source file: Idea(1).docx_
-
 ## Overview
 
-A research paper about early student dropout prediction using the *Predict Students' Dropout and Academic Success* dataset. The main goal is to predict dropout as early as possible by using only variables that are already available before the student is formally accepted into higher education.
+This project predicts student dropout risk as early as possible using only enrollment/background information and academic path information that is reasonable to collect in an MVP input form.
 
-The key idea of the paper is to compare Gaussian Naive Bayes and XGBoost under a strict pre-acceptance setting. Unlike many previous studies that rely on semester-based academic performance variables or later administrative status variables, this study will focus only on information that can realistically be known during the application or admission stage.
+The final direction is intentionally fixed and simple: use the same 10 MVP features from EDA through preprocessing, model training, saved artifacts, and the Streamlit app. This avoids leakage from semester performance variables and avoids confusing manual inputs such as macroeconomic indicators or dataset-specific admission codes.
 
 ## Target Transformation
 
-The target should be transformed into binary classification:
+The target is transformed into binary classification:
 
 - Graduate = 0
 - Dropout = 1
-- Enrolled should be removed
+- Enrolled is removed
+
+## Final MVP Features
+
+```text
+Marital status
+Course
+Previous qualification
+Mother's qualification
+Father's qualification
+Displaced
+Educational special needs
+Gender
+Age at enrollment
+International
+```
 
 ## Variables to Remove
 
-The study should exclude every variable that is not clearly available before student acceptance. This means the following variables should be removed:
+The study excludes variables that are not suitable for early MVP prediction:
 
 - Debtor
 - Tuition fees up to date
 - Scholarship holder
+- Application mode
+- Application order
+- Daytime/evening attendance
+- Nacionality
+- Mother's occupation
+- Father's occupation
+- Unemployment rate
+- Inflation rate
+- GDP
 - Curricular units 1st sem (credited)
 - Curricular units 1st sem (enrolled)
 - Curricular units 1st sem (evaluations)
@@ -36,92 +58,37 @@ The study should exclude every variable that is not clearly available before stu
 - Curricular units 2nd sem (grade)
 - Curricular units 2nd sem (without evaluations)
 
-## Valid Pre-Acceptance Variables
-
-The remaining variables should be treated as valid pre-acceptance variables:
-
-- Marital status
-- Application mode
-- Application order
-- Course
-- Previous qualification
-- Mother's qualification
-- Father's qualification
-- Displaced
-- Educational special needs
-- Gender
-- Age at enrollment
-- International
-- Unemployment rate
-- Inflation rate
-- GDP
-
-## Feature Settings
-
-To make the study more meaningful without making it too complicated, the experiment should use two feature settings.
-
-### Setting A: Background-Only Variables
-
-These variables represent demographic, family, social, and macroeconomic information that can be viewed as background characteristics:
-
-- Marital status
-- Mother's qualification
-- Father's qualification
-- Displaced
-- Educational special needs
-- Gender
-- Age at enrollment
-- International
-- Unemployment rate
-- Inflation rate
-- GDP
-
-### Setting B: Background + Application-Related Variables
-
-This setting keeps all variables from Setting A and adds variables that are directly available from the application process:
-
-- Application mode
-- Application order
-- Course
-- Previous qualification
-
 ## Models
 
-The two models used in the study should remain simple and manageable:
+The final project compares two classical machine learning models:
 
-- Gaussian Naive Bayes as the classical probabilistic baseline
-- XGBoost as the stronger boosting-based model
+- Logistic Regression as the simple and interpretable baseline
+- Random Forest as the stronger non-linear model for categorical-heavy tabular data
+
+Naive Bayes and XGBoost are no longer part of the final MVP pipeline. This keeps the experiment focused and easier to explain while still comparing a linear baseline against a non-linear model.
 
 ## Preprocessing
 
-The preprocessing should remain straightforward:
+The preprocessing remains straightforward:
 
 - Remove Enrolled from the target.
 - Encode target into binary classes.
-- Apply the selected features only.
-- Use an 80:20 train-test split.
-- Apply one-hot encoding for categorical features where needed.
-- Apply scaling for numerical features where needed.
-- Use SMOTE on the training set if class imbalance handling is still required.
-- Evaluate the models using accuracy, precision, recall, F1-score, and confusion matrix.
+- Keep only the 10 final MVP features plus target.
+- Use one-hot encoding for categorical features during modeling.
+- Use scaling for `Age at enrollment`.
+- Evaluate models using accuracy, precision, recall, F1-score, ROC-AUC, confusion matrix, and classification report.
 
 ## Main Research Question
 
-Can student dropout be predicted meaningfully using only pre-acceptance variables, and does XGBoost outperform Gaussian Naive Bayes under this stricter early-stage setting?
+Can student dropout risk be predicted meaningfully using only selected early enrollment/background features, and does Random Forest outperform Logistic Regression under this MVP feature scope?
 
 ## Contribution
 
-The contribution of the paper should be framed as follows:
-
-1. It provides a controlled comparison between Gaussian Naive Bayes and XGBoost for early dropout prediction.
-2. It uses a stricter pre-acceptance feature definition rather than the broader and more ambiguous label of non-academic variables.
-3. It compares two feature settings: background-only and background plus application-related variables.
-4. It evaluates whether meaningful dropout prediction is possible before semester-based academic or post-acceptance variables become available.
-
-## Value of the Idea
-
-The value of this idea is that it is still simple enough for a course project, but more useful and cleaner than a basic model comparison. The paper is not only asking which model performs better, but also whether institutions can already identify at-risk students using only data available before admission is finalized.
+1. It uses a fixed, understandable MVP feature set from start to finish.
+2. It removes semester academic variables and post-acceptance/admin variables to reduce leakage.
+3. It avoids manual macroeconomic inputs and dataset-specific admission fields that may confuse users.
+4. It compares a simple interpretable baseline with a stronger non-linear model.
 
 ## Recommended Title
 
-Early Student Dropout Prediction Using Pre-Acceptance Variables: A Comparison of Gaussian Naive Bayes and XGBoost
+Early Student Dropout Prediction Using Selected Enrollment Features: A Comparison of Logistic Regression and Random Forest

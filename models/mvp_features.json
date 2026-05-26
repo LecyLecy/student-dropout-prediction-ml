@@ -1,10 +1,12 @@
 [
-    "Tuition fees up to date",
+    "Marital status",
     "Course",
-    "Scholarship holder",
-    "Gender",
-    "Debtor",
+    "Previous qualification",
     "Mother's qualification",
-    "Mother's occupation",
-    "Age at enrollment"
+    "Father's qualification",
+    "Displaced",
+    "Educational special needs",
+    "Gender",
+    "Age at enrollment",
+    "International"
 ]

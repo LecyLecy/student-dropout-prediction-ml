@@ -2,7 +2,7 @@
 
 A machine learning final project for predicting student dropout risk using selected early non-academic and enrollment-related features.
 
-The project includes data preprocessing, exploratory data analysis, model training, MVP feature selection, and a Streamlit-based prediction app.
+The project includes data preprocessing, exploratory data analysis, model training with a fixed MVP feature scope, and a Streamlit-based prediction app.
 
 ## Project Overview
 
@@ -103,7 +103,7 @@ Main steps:
 data/processed/processed.csv
 ```
 
-### 3. Model Training and Feature Selection
+### 3. Model Training
 
 Notebook:
 
@@ -116,10 +116,9 @@ Main steps:
 - Load processed dataset
 - Split data into train, validation, and test sets
 - Build preprocessing pipeline
-- Train baseline models
+- Train Logistic Regression and Random Forest
 - Evaluate models using classification metrics
 - Select the best model
-- Use permutation importance for MVP feature selection
 - Retrain final MVP model
 - Save model artifacts
 
@@ -163,6 +162,24 @@ Some features were excluded for usability reasons:
 
 - `Unemployment rate` is a macroeconomic indicator and should ideally be filled automatically from official statistics, not manually by users.
 - `Application mode` is based on the original dataset's admission system and may be confusing for Indonesian users.
+- Semester academic performance, debtor status, tuition payment status, and scholarship status are excluded to avoid leakage or post-acceptance/admin inputs.
+
+## Final Models
+
+The final experiment compares:
+
+```text
+Logistic Regression
+Random Forest
+```
+
+Logistic Regression is used as the simple interpretable baseline. Random Forest is used as the stronger non-linear comparison model for categorical-heavy tabular data.
+
+The detailed feature and model rationale is documented in:
+
+```text
+docs/Final_Feature_Model_Plan.md
+```
 
 ## Model Artifacts
 
