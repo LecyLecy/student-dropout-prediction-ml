@@ -147,14 +147,16 @@ The MVP uses selected features that are important and practical for user input.
 Current MVP features:
 
 ```text
-Tuition fees up to date
+Marital status
 Course
-Scholarship holder
-Gender
-Debtor
+Previous qualification
 Mother's qualification
-Mother's occupation
+Father's qualification
+Displaced
+Educational special needs
+Gender
 Age at enrollment
+International
 ```
 
 Some features were excluded for usability reasons:

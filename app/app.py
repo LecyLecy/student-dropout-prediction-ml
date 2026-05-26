@@ -56,7 +56,7 @@ def get_fallback_label(feature):
         "Application mode": "Other admission pathway",
         "Course": "Other study program",
         "Mother's qualification": "Other education level",
-        "Mother's occupation": "Other occupation",
+        "Father's qualification": "Other education level",
     }
 
     return fallback_labels.get(feature, "Other")
