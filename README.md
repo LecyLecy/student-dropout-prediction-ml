@@ -114,13 +114,10 @@ notebooks/03_model_training_and_feature_selection.ipynb
 Main steps:
 
 - Load processed dataset
-- Split data into train, validation, and test sets
-- Build preprocessing pipeline
-- Train Logistic Regression and Random Forest
-- Evaluate models using classification metrics
-- Select the best model
-- Retrain final MVP model
-- Save model artifacts
+- Build the final preprocessing pipeline with binary passthrough, `RobustScaler`, `OneHotEncoder`, and `TargetEncoder`
+- Evaluate Logistic Regression, Random Forest, Gradient Boosting, Extra Trees, and SVM with 5-fold stratified cross-validation
+- Tune the decision threshold for Dropout recall
+- Save the threshold-tuned best model, selectable model pipelines, reports, and figures
 
 ### 4. Streamlit App
 
@@ -132,12 +129,13 @@ app/app.py
 
 The app:
 
-- Loads the final trained MVP model
+- Loads selectable trained model pipelines
 - Loads feature configuration
 - Displays user-friendly input labels
 - Converts text input options back into encoded values for the model
+- Marks the selected best model in the model dropdown
 - Predicts Graduate or Dropout risk
-- Shows prediction probabilities
+- Shows prediction probabilities and report segments
 
 ## Final MVP Features
 
@@ -171,14 +169,18 @@ The final experiment compares:
 ```text
 Logistic Regression
 Random Forest
+Gradient Boosting
+Extra Trees
+SVM (RBF)
 ```
 
-Logistic Regression is used as the simple interpretable baseline. Random Forest is used as the stronger non-linear comparison model for categorical-heavy tabular data.
+Random Forest is the selected best model and uses a `0.40` Dropout decision threshold to prioritize recall. Logistic Regression remains the interpretable baseline, while Gradient Boosting, Extra Trees, and SVM provide additional classical-model comparison points.
 
 The detailed feature and model rationale is documented in:
 
 ```text
 docs/Final_Feature_Model_Plan.md
+docs/Idea_And_Conclussion.md
 ```
 
 ## Model Artifacts
@@ -187,6 +189,7 @@ Saved model files:
 
 ```text
 models/final_mvp_model.pkl
+models/model_pipelines.pkl
 models/model_metadata.json
 models/mvp_features.json
 ```

@@ -1,10 +1,13 @@
 {
     "model_name": "Final Student Dropout Prediction Model",
-    "base_model": "Logistic Regression",
-    "best_model": "Logistic Regression",
+    "base_model": "Random Forest",
+    "best_model": "Random Forest",
     "available_models": [
         "Logistic Regression",
-        "Random Forest"
+        "Random Forest",
+        "Gradient Boosting",
+        "Extra Trees",
+        "SVM (RBF)"
     ],
     "model_pipelines_path": "models/model_pipelines.pkl",
     "target_mapping": {
@@ -13,6 +16,14 @@
     },
     "positive_class": "Dropout",
     "positive_class_value": 1,
+    "decision_threshold": 0.4,
+    "model_thresholds": {
+        "Logistic Regression": 0.5,
+        "Random Forest": 0.4,
+        "Gradient Boosting": 0.5,
+        "Extra Trees": 0.5,
+        "SVM (RBF)": 0.5
+    },
     "mvp_feature_count": 10,
     "mvp_features": [
         "Marital status",
@@ -26,47 +37,147 @@
         "Age at enrollment",
         "International"
     ],
-    "continuous_features": [
-        "Age at enrollment"
-    ],
-    "categorical_features": [
-        "Marital status",
-        "Course",
-        "Previous qualification",
-        "Mother's qualification",
-        "Father's qualification",
-        "Displaced",
-        "Educational special needs",
-        "Gender",
-        "International"
-    ],
-    "selection_metric": "F1-Score",
-    "validation_results": [
+    "feature_groups": {
+        "binary_features": [
+            "Displaced",
+            "Educational special needs",
+            "Gender",
+            "International"
+        ],
+        "continuous_features": [
+            "Age at enrollment"
+        ],
+        "ohe_features": [
+            "Marital status",
+            "Course",
+            "Previous qualification"
+        ],
+        "target_encoded_features": [
+            "Mother's qualification",
+            "Father's qualification"
+        ]
+    },
+    "selection_metric": "Dropout F1-score with recall-first threshold tuning",
+    "cv_results": [
+        {
+            "Model": "Random Forest",
+            "Recall": 0.6840177909562639,
+            "Precision": 0.6140966243102585,
+            "F1-Score": 0.6469605892435772,
+            "ROC-AUC": 0.7701424933319396
+        },
+        {
+            "Model": "Extra Trees",
+            "Recall": 0.6903459352606869,
+            "Precision": 0.5986660389423035,
+            "F1-Score": 0.6411100230003058,
+            "ROC-AUC": 0.7643506327470639
+        },
+        {
+            "Model": "SVM (RBF)",
+            "Recall": 0.6833283914010378,
+            "Precision": 0.5983632677906578,
+            "F1-Score": 0.6378336186234854,
+            "ROC-AUC": 0.7620856247182939
+        },
         {
             "Model": "Logistic Regression",
-            "Accuracy": 0.6983471074380165,
-            "Precision": 0.6616915422885572,
-            "Recall": 0.46830985915492956,
-            "F1-Score": 0.5484536082474227,
-            "ROC-AUC": 0.7497132113950673
+            "Recall": 0.6657252285643687,
+            "Precision": 0.6100837862521334,
+            "F1-Score": 0.6365036514206197,
+            "ROC-AUC": 0.7587862422027474
+        },
+        {
+            "Model": "Gradient Boosting",
+            "Recall": 0.5622782307882381,
+            "Precision": 0.6646443128330793,
+            "F1-Score": 0.6088102780674701,
+            "ROC-AUC": 0.765943226092652
+        }
+    ],
+    "threshold_results": [
+        {
+            "Model": "Logistic Regression",
+            "Threshold": 0.5,
+            "Recall": 0.7183098591549296,
+            "Precision": 0.6035502958579881,
+            "F1-Score": 0.6559485530546624,
+            "ROC-AUC": 0.7651719138359568
+        },
+        {
+            "Model": "Logistic Regression",
+            "Threshold": 0.4,
+            "Recall": 0.8485915492957746,
+            "Precision": 0.5331858407079646,
+            "F1-Score": 0.654891304347826,
+            "ROC-AUC": 0.7651719138359568
+        },
+        {
+            "Model": "Logistic Regression",
+            "Threshold": 0.35,
+            "Recall": 0.897887323943662,
+            "Precision": 0.4922779922779923,
+            "F1-Score": 0.6359102244389028,
+            "ROC-AUC": 0.7651719138359568
         },
         {
             "Model": "Random Forest",
-            "Accuracy": 0.6584022038567493,
-            "Precision": 0.5737704918032787,
-            "Recall": 0.49295774647887325,
-            "F1-Score": 0.5303030303030303,
-            "ROC-AUC": 0.6876473774775349
+            "Threshold": 0.5,
+            "Recall": 0.6901408450704225,
+            "Precision": 0.6012269938650306,
+            "F1-Score": 0.6426229508196721,
+            "ROC-AUC": 0.7752652794595629
+        },
+        {
+            "Model": "Random Forest",
+            "Threshold": 0.4,
+            "Recall": 0.8380281690140845,
+            "Precision": 0.5372460496613995,
+            "F1-Score": 0.6547455295735901,
+            "ROC-AUC": 0.7752652794595629
+        },
+        {
+            "Model": "Random Forest",
+            "Threshold": 0.35,
+            "Recall": 0.8873239436619719,
+            "Precision": 0.509090909090909,
+            "F1-Score": 0.6469833119383825,
+            "ROC-AUC": 0.7752652794595629
+        },
+        {
+            "Model": "Gradient Boosting",
+            "Threshold": 0.5,
+            "Recall": 0.5598591549295775,
+            "Precision": 0.6463414634146342,
+            "F1-Score": 0.6,
+            "ROC-AUC": 0.7608621184118285
+        },
+        {
+            "Model": "Gradient Boosting",
+            "Threshold": 0.4,
+            "Recall": 0.6690140845070423,
+            "Precision": 0.5900621118012422,
+            "F1-Score": 0.6270627062706271,
+            "ROC-AUC": 0.7608621184118285
+        },
+        {
+            "Model": "Gradient Boosting",
+            "Threshold": 0.35,
+            "Recall": 0.7394366197183099,
+            "Precision": 0.5817174515235457,
+            "F1-Score": 0.6511627906976745,
+            "ROC-AUC": 0.7608621184118285
         }
     ],
     "evaluation": [
         {
-            "Model": "Final Test Evaluation",
-            "Accuracy": 0.7038567493112947,
-            "Precision": 0.6408163265306123,
-            "Recall": 0.5528169014084507,
-            "F1-Score": 0.5935727788279774,
-            "ROC-AUC": 0.7591891848830541
+            "Model": "Random Forest",
+            "Threshold": 0.4,
+            "Accuracy": 0.6542699724517906,
+            "Precision": 0.5372460496613995,
+            "Recall": 0.8380281690140845,
+            "F1-Score": 0.6547455295735901,
+            "ROC-AUC": 0.7752652794595629
         }
     ]
 }

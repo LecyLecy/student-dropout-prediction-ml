@@ -205,8 +205,7 @@ def render_prediction_inputs(
     return user_input, display_input
 
 
-def render_prediction_result(selected_model_name, selected_model, input_df, display_input):
-    prediction = selected_model.predict(input_df)[0]
+def render_prediction_result(selected_model_name, selected_model, threshold, input_df, display_input):
     prediction_probability = selected_model.predict_proba(input_df)[0]
     class_probability = {
         int(class_value): float(prediction_probability[index])
@@ -215,9 +214,10 @@ def render_prediction_result(selected_model_name, selected_model, input_df, disp
 
     graduate_probability = class_probability.get(0, 0.0)
     dropout_probability = class_probability.get(1, 0.0)
+    prediction = int(dropout_probability >= threshold)
 
     st.subheader("Prediction Result")
-    st.caption(f"Model used: {selected_model_name}")
+    st.caption(f"Model used: {selected_model_name} | Dropout threshold: {threshold:.2f}")
 
     if int(prediction) == 1:
         st.error("Prediction: Dropout Risk")
@@ -241,9 +241,10 @@ def render_report_section(section):
     if section == "Model Comparison":
         st.subheader("Model Comparison")
         st.write(
-            "Logistic Regression is the best model in the current run. It has stronger "
-            "validation F1-score and ROC-AUC than Random Forest, although Random Forest "
-            "has slightly higher Dropout recall on the validation split."
+            "Random Forest is the selected best model because it gives the strongest "
+            "Dropout F1-score in 5-fold cross-validation. The broader comparison also "
+            "keeps Logistic Regression as an interpretable baseline and compares Extra "
+            "Trees, SVM, and Gradient Boosting."
         )
 
         with st.expander("Validation metrics table", expanded=True):
@@ -252,37 +253,45 @@ def render_report_section(section):
         with st.expander("Validation metrics plot", expanded=False):
             show_image_if_exists(
                 "validation_metrics_comparison.png",
-                "Validation metric comparison for Logistic Regression and Random Forest."
+                "5-fold CV metric comparison across all tested models."
             )
 
         with st.expander("Final test metrics", expanded=False):
             show_dataframe_if_exists("final_model_evaluation.csv")
 
+        with st.expander("Combined model comparison figure", expanded=False):
+            show_image_if_exists(
+                "ml_model_comparison.png",
+                "Combined model metrics, ROC-AUC distribution, confusion matrices, and RF feature importance."
+            )
+
+        with st.expander("Threshold tuning table", expanded=False):
+            show_dataframe_if_exists("threshold_tuning_results.csv")
+
     elif section == "Confusion Matrix":
         st.subheader("Confusion Matrix")
         st.write(
             "The confusion matrices show the balance between correctly identified Graduate "
-            "and Dropout records. Logistic Regression is more conservative on Dropout than "
-            "Random Forest in validation, while the final test matrix shows the best model's "
-            "final error pattern."
+            "and Dropout records. Lowering the Random Forest threshold increases Dropout "
+            "recall, which matches the early-warning goal from the EDA."
         )
 
-        with st.expander("Validation - Logistic Regression", expanded=False):
-            show_image_if_exists(
-                "validation_confusion_matrix_logistic_regression.png",
-                "Validation confusion matrix for Logistic Regression."
-            )
-
-        with st.expander("Validation - Random Forest", expanded=False):
+        with st.expander("Random Forest at threshold 0.35", expanded=False):
             show_image_if_exists(
                 "validation_confusion_matrix_random_forest.png",
-                "Validation confusion matrix for Random Forest."
+                "Random Forest confusion matrix with a low-recall-first threshold."
+            )
+
+        with st.expander("Gradient Boosting at threshold 0.35", expanded=False):
+            show_image_if_exists(
+                "validation_confusion_matrix_gradient_boosting.png",
+                "Gradient Boosting confusion matrix with a low-recall-first threshold."
             )
 
         with st.expander("Final test confusion matrix", expanded=True):
             show_image_if_exists(
                 "final_test_confusion_matrix.png",
-                "Final test confusion matrix for the selected best model."
+                "Final Random Forest confusion matrix using threshold 0.40."
             )
 
         with st.expander("Validation classification report", expanded=False):
@@ -292,8 +301,9 @@ def render_report_section(section):
         st.subheader("ROC Curves")
         st.write(
             "ROC-AUC measures how well the model separates Graduate and Dropout across "
-            "thresholds. Logistic Regression has the stronger validation ROC-AUC in the "
-            "current experiment."
+            "thresholds. Random Forest and Gradient Boosting are competitive, while "
+            "Random Forest is selected because recall/F1 at the tuned threshold is the "
+            "main priority."
         )
 
         with st.expander("Validation ROC comparison", expanded=True):
@@ -311,30 +321,18 @@ def render_report_section(section):
     elif section == "Feature Importance":
         st.subheader("Feature Importance")
         st.write(
-            "Permutation importance is used only for interpretation. The strongest signals "
-            "in the final model are Course, Age at enrollment, and Gender. The fixed MVP "
-            "feature set is not changed by this importance ranking."
+            "Feature importance is used only for interpretation. Random Forest highlights "
+            "Age at enrollment, parents' qualification, Gender, and specific Course values "
+            "as the strongest signals. The fixed MVP feature set is not changed by this ranking."
         )
 
-        with st.expander("Final permutation importance table", expanded=True):
-            show_dataframe_if_exists("final_permutation_feature_importance.csv")
+        with st.expander("Final feature importance table", expanded=True):
+            show_dataframe_if_exists("final_feature_importance.csv")
 
-        with st.expander("Final permutation importance plot", expanded=False):
+        with st.expander("Final feature importance plot", expanded=False):
             show_image_if_exists(
-                "final_permutation_feature_importance.png",
-                "Final permutation feature importance for the selected best model."
-            )
-
-        with st.expander("Validation importance - Logistic Regression", expanded=False):
-            show_image_if_exists(
-                "validation_permutation_importance_logistic_regression.png",
-                "Validation permutation importance for Logistic Regression."
-            )
-
-        with st.expander("Validation importance - Random Forest", expanded=False):
-            show_image_if_exists(
-                "validation_permutation_importance_random_forest.png",
-                "Validation permutation importance for Random Forest."
+                "final_feature_importance.png",
+                "Final Random Forest feature importance for the selected best model."
             )
 
 
@@ -355,7 +353,12 @@ feature_labels = feature_config.get("feature_labels", {})
 feature_descriptions = feature_config.get("feature_descriptions", {})
 value_mappings = feature_config.get("value_mappings", {})
 numeric_inputs = feature_config.get("numeric_inputs", {})
-continuous_features = metadata.get("continuous_features", [])
+feature_groups = metadata.get("feature_groups", {})
+continuous_features = metadata.get(
+    "continuous_features",
+    feature_groups.get("continuous_features", [])
+)
+model_thresholds = metadata.get("model_thresholds", {})
 
 missing_from_metadata = [
     feature for feature in config_features
@@ -413,6 +416,8 @@ with prediction_tab:
     )
     selected_model_name = model_display_options[selected_model_display]
     selected_model = models[selected_model_name]
+    selected_threshold = float(model_thresholds.get(selected_model_name, 0.50))
+    st.caption(f"Dropout decision threshold for this model: {selected_threshold:.2f}")
 
     with st.form("prediction_form"):
         user_input, display_input = render_prediction_inputs(
@@ -432,6 +437,7 @@ with prediction_tab:
         render_prediction_result(
             selected_model_name,
             selected_model,
+            selected_threshold,
             input_df,
             display_input
         )

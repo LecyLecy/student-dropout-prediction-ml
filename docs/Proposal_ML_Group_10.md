@@ -40,12 +40,15 @@ Fitur semester akademik, status administrasi setelah diterima, macroeconomic var
 
 ## IV. Modeling
 
-Proyek ini membandingkan dua model:
+Proyek ini membandingkan lima model klasik:
 
 1. Logistic Regression
 2. Random Forest
+3. Gradient Boosting
+4. Extra Trees
+5. SVM (RBF)
 
-Logistic Regression digunakan sebagai baseline sederhana dan interpretable. Random Forest digunakan sebagai model pembanding non-linear yang lebih cocok untuk pola tabular dengan banyak fitur kategorikal.
+Logistic Regression digunakan sebagai baseline sederhana dan interpretable. Random Forest dipilih sebagai model utama karena menghasilkan trade-off terbaik untuk F1-score dan recall kelas Dropout. Threshold Random Forest diturunkan menjadi `0.40` agar sistem lebih sensitif terhadap mahasiswa berisiko dropout.
 
 ## V. Preprocessing
 
@@ -54,8 +57,10 @@ Tahapan preprocessing:
 - Hapus Enrolled.
 - Encode target menjadi Graduate = 0 dan Dropout = 1.
 - Simpan hanya 10 fitur MVP + Target ke `data/processed/processed.csv`.
-- Gunakan OneHotEncoder untuk fitur kategorikal dalam pipeline model.
-- Gunakan StandardScaler untuk `Age at enrollment`.
+- Gunakan passthrough untuk fitur binary.
+- Gunakan RobustScaler untuk `Age at enrollment`.
+- Gunakan OneHotEncoder untuk fitur nominal dengan cardinality yang masih manageable.
+- Gunakan TargetEncoder untuk Mother's qualification dan Father's qualification.
 
 ## VI. Metrics Evaluation
 

@@ -38,14 +38,25 @@ These features are kept because they are available early, understandable for use
 
 ## Model Selection
 
-The final experiment compares two classical machine learning models:
+The final experiment compares five classical machine learning models:
 
 1. Logistic Regression
 2. Random Forest
+3. Gradient Boosting
+4. Extra Trees
+5. SVM (RBF)
 
-Logistic Regression is the baseline because it is simple, interpretable, and suitable for binary classification. Random Forest is the stronger non-linear comparison model because the selected tabular features contain categorical and interaction-heavy patterns.
+Logistic Regression is the baseline because it is simple, interpretable, and suitable for binary classification. Random Forest is the selected primary model because it gives the strongest Dropout F1-score in 5-fold cross-validation and works well with categorical-heavy tabular data.
 
-Naive Bayes is not used because earlier results were weak, and using only two models keeps the project easier to explain. XGBoost is also not used in the MVP pipeline to keep the implementation lightweight and focused on scikit-learn.
+The final Random Forest uses a `0.40` decision threshold for Dropout to prioritize recall in the early-warning setting. Naive Bayes is not used because earlier results were weak. XGBoost is also not used in the MVP pipeline to keep the implementation lightweight and focused on scikit-learn.
+
+## Preprocessing Pipeline
+
+- Binary flags (`Displaced`, `Educational special needs`, `Gender`, `International`) use passthrough because they are already 0/1.
+- `Age at enrollment` uses `RobustScaler` because EDA shows right skew and high-age outliers.
+- `Marital status`, `Course`, and `Previous qualification` use `OneHotEncoder(drop="first")` because they are nominal with manageable cardinality.
+- `Mother's qualification` and `Father's qualification` use `TargetEncoder(cv=5)` because they have many sparse categories.
+- Class balancing is used where supported because Dropout recall is the priority.
 
 ## Pipeline Summary
 
@@ -57,4 +68,11 @@ EDA -> preprocessing -> model training -> saved model -> Streamlit app
 - Target is encoded as `Graduate = 0` and `Dropout = 1`.
 - `processed.csv` contains 10 features plus the encoded target.
 - `mvp_features_readable.csv` contains the same 10 features plus readable `Graduate` and `Dropout` targets for inspection.
-- The saved model metadata stores the fixed MVP feature list, not a feature-selection output.
+- `mvp_features_numeric.csv` contains the same 10 features in original numeric encoding plus readable target labels.
+- The saved model metadata stores the fixed MVP feature list, final threshold, model comparison results, and feature groups.
+
+More detailed reasoning and final conclusions are documented in:
+
+```text
+docs/Idea_And_Conclussion.md
+```
