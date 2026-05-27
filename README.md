@@ -1,5 +1,7 @@
 # Student Dropout Prediction ML
 
+[Open the Streamlit App](https://student-dropout-prediction-ml-mvp.streamlit.app/)
+
 A machine learning final project for predicting student dropout risk using selected early non-academic and enrollment-related features.
 
 The project includes data preprocessing, exploratory data analysis, model training with a fixed MVP feature scope, and a Streamlit-based prediction app.
