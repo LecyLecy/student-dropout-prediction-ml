@@ -1,6 +1,12 @@
 {
     "model_name": "Final Student Dropout Prediction Model",
     "base_model": "Logistic Regression",
+    "best_model": "Logistic Regression",
+    "available_models": [
+        "Logistic Regression",
+        "Random Forest"
+    ],
+    "model_pipelines_path": "models/model_pipelines.pkl",
     "target_mapping": {
         "Graduate": 0,
         "Dropout": 1
@@ -42,7 +48,7 @@
             "Precision": 0.6616915422885572,
             "Recall": 0.46830985915492956,
             "F1-Score": 0.5484536082474227,
-            "ROC-AUC": 0.7497928748964375
+            "ROC-AUC": 0.7497132113950673
         },
         {
             "Model": "Random Forest",
@@ -56,11 +62,11 @@
     "evaluation": [
         {
             "Model": "Final Test Evaluation",
-            "Accuracy": 0.7024793388429752,
-            "Precision": 0.639344262295082,
-            "Recall": 0.5492957746478874,
-            "F1-Score": 0.5909090909090909,
-            "ROC-AUC": 0.7586076413230514
+            "Accuracy": 0.7038567493112947,
+            "Precision": 0.6408163265306123,
+            "Recall": 0.5528169014084507,
+            "F1-Score": 0.5935727788279774,
+            "ROC-AUC": 0.7591891848830541
         }
     ]
 }
