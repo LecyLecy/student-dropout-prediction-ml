@@ -4,3 +4,4 @@ create_conda_env.txt
 environment_test.py
 AGENTS.md
 __pycache__/
+.vscode/
