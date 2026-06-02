@@ -50,7 +50,10 @@ student-dropout-prediction-ml
 │   ├── raw
 │   │   └── dataset.csv
 │   └── processed
-│       └── processed.csv
+│       ├── mvp_features_numeric.csv
+│       ├── mvp_features_readable.csv
+│       ├── processed.csv
+│       └── raw_features_readable.csv
 ├── models
 │   ├── final_mvp_model.pkl
 │   ├── model_metadata.json
@@ -80,6 +83,7 @@ Main steps:
 
 - Load raw dataset
 - Check dataset shape, columns, missing values, and duplicates
+- Save a full-feature readable raw dataset for categorical inspection
 - Remove `Enrolled` records for binary EDA scope
 - Remove academic performance features for early prediction scope
 - Analyze target distribution
@@ -104,6 +108,7 @@ Main steps:
 - Save processed dataset to:
 
 ```text
+data/processed/mvp_features_numeric.csv
 data/processed/processed.csv
 ```
 

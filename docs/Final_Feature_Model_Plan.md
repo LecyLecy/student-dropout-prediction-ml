@@ -69,6 +69,7 @@ EDA -> preprocessing -> model training -> saved model -> Streamlit app
 - `processed.csv` contains 10 features plus the encoded target.
 - `mvp_features_readable.csv` contains the same 10 features plus readable `Graduate` and `Dropout` targets for inspection.
 - `mvp_features_numeric.csv` contains the same 10 features in original numeric encoding plus readable target labels.
+- `raw_features_readable.csv` contains all original raw columns, with available categorical codes converted to readable labels for inspection.
 - The saved model metadata stores the fixed MVP feature list, final threshold, model comparison results, and feature groups.
 
 More detailed reasoning and final conclusions are documented in:
