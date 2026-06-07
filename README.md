@@ -210,20 +210,29 @@ These files are included in the repository so the Streamlit app can run without 
 Main libraries:
 
 ```text
-pandas
-numpy
-scikit-learn
-matplotlib
-streamlit
-joblib
-jupyter
-ipykernel
+numpy==2.3.5
+pandas==2.3.3
+scikit-learn==1.8.0
+streamlit==1.55.0
+joblib==1.5.2
+matplotlib==3.10.7
+seaborn==0.13.2
 ```
 
-Install all dependencies using:
+The Streamlit deployment uses `requirements.txt`. The saved model artifacts were
+created with NumPy 2.x and scikit-learn 1.8, so these versions are pinned to keep
+model loading consistent on Streamlit Community Cloud.
+
+Install app dependencies using:
 
 ```bash
 pip install -r requirements.txt
+```
+
+For notebook development, install the additional Jupyter dependencies:
+
+```bash
+pip install -r requirements-dev.txt
 ```
 
 ## Setup Instructions
@@ -253,10 +262,10 @@ Activate the environment.
 conda activate student_dropout_ml
 ```
 
-Install dependencies.
+Install notebook development dependencies.
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ### 3. Register Jupyter Kernel

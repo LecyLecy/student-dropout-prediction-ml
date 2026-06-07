@@ -26,10 +26,18 @@ FIGURES_DIR = REPORTS_DIR / "figures"
 
 @st.cache_resource
 def load_model_pipelines():
-    if MODEL_PIPELINES_PATH.exists():
-        return joblib.load(MODEL_PIPELINES_PATH)
+    try:
+        if MODEL_PIPELINES_PATH.exists():
+            return joblib.load(MODEL_PIPELINES_PATH)
 
-    return {"Final Model": joblib.load(MODEL_PATH)}
+        return {"Final Model": joblib.load(MODEL_PATH)}
+    except ModuleNotFoundError as error:
+        st.error(
+            "The saved model could not be loaded because a required Python "
+            f"package is missing: `{error.name}`. Install the pinned "
+            "dependencies from `requirements.txt` and redeploy the app."
+        )
+        st.stop()
 
 
 @st.cache_data
