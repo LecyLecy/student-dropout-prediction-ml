@@ -375,9 +375,10 @@ with report_tab:
         "features used by the selected final model."
     )
 
-    selected_report_section = st.selectbox(
+    selected_report_section = st.radio(
         "Report segment",
-        options=["Model Comparison", "Feature Importance"]
+        options=["Model Comparison", "Feature Importance"],
+        horizontal=True
     )
 
     render_report_section(selected_report_section)
