@@ -245,103 +245,15 @@ def render_prediction_result(selected_model_name, selected_model, threshold, inp
         st.dataframe(input_df, use_container_width=True, hide_index=True)
 
 
-def render_report_section(section):
-    if section == "Model Comparison":
-        st.subheader("Model Comparison")
-        st.write(
-            "Random Forest is the selected best model because it gives the strongest "
-            "Dropout F1-score in 5-fold cross-validation. The broader comparison also "
-            "keeps Logistic Regression as an interpretable baseline and compares Extra "
-            "Trees, SVM, and Gradient Boosting."
-        )
+def render_report_section():
+    st.subheader("Model Comparison")
+    show_dataframe_if_exists("validation_model_comparison.csv")
 
-        with st.expander("Validation metrics table", expanded=True):
-            show_dataframe_if_exists("validation_model_comparison.csv")
-
-        with st.expander("Validation metrics plot", expanded=False):
-            show_image_if_exists(
-                "validation_metrics_comparison.png",
-                "5-fold CV metric comparison across all tested models."
-            )
-
-        with st.expander("Final test metrics", expanded=False):
-            show_dataframe_if_exists("final_model_evaluation.csv")
-
-        with st.expander("Combined model comparison figure", expanded=False):
-            show_image_if_exists(
-                "ml_model_comparison.png",
-                "Combined model metrics, ROC-AUC distribution, confusion matrices, and RF feature importance."
-            )
-
-        with st.expander("Threshold tuning table", expanded=False):
-            show_dataframe_if_exists("threshold_tuning_results.csv")
-
-    elif section == "Confusion Matrix":
-        st.subheader("Confusion Matrix")
-        st.write(
-            "The confusion matrices show the balance between correctly identified Graduate "
-            "and Dropout records. Lowering the Random Forest threshold increases Dropout "
-            "recall, which matches the early-warning goal from the EDA."
-        )
-
-        with st.expander("Random Forest at threshold 0.35", expanded=False):
-            show_image_if_exists(
-                "validation_confusion_matrix_random_forest.png",
-                "Random Forest confusion matrix with a low-recall-first threshold."
-            )
-
-        with st.expander("Gradient Boosting at threshold 0.35", expanded=False):
-            show_image_if_exists(
-                "validation_confusion_matrix_gradient_boosting.png",
-                "Gradient Boosting confusion matrix with a low-recall-first threshold."
-            )
-
-        with st.expander("Final test confusion matrix", expanded=True):
-            show_image_if_exists(
-                "final_test_confusion_matrix.png",
-                "Final Random Forest confusion matrix using threshold 0.40."
-            )
-
-        with st.expander("Validation classification report", expanded=False):
-            show_dataframe_if_exists("validation_classification_report.csv")
-
-    elif section == "ROC Curves":
-        st.subheader("ROC Curves")
-        st.write(
-            "ROC-AUC measures how well the model separates Graduate and Dropout across "
-            "thresholds. Random Forest and Gradient Boosting are competitive, while "
-            "Random Forest is selected because recall/F1 at the tuned threshold is the "
-            "main priority."
-        )
-
-        with st.expander("Validation ROC comparison", expanded=True):
-            show_image_if_exists(
-                "validation_roc_curve_comparison.png",
-                "Validation ROC curve comparison."
-            )
-
-        with st.expander("Final test ROC curve", expanded=False):
-            show_image_if_exists(
-                "final_test_roc_curve.png",
-                "Final test ROC curve for the selected best model."
-            )
-
-    elif section == "Feature Importance":
-        st.subheader("Feature Importance")
-        st.write(
-            "Feature importance is used only for interpretation. Random Forest highlights "
-            "Age at enrollment, parents' qualification, Gender, and specific Course values "
-            "as the strongest signals. The fixed MVP feature set is not changed by this ranking."
-        )
-
-        with st.expander("Final feature importance table", expanded=True):
-            show_dataframe_if_exists("final_feature_importance.csv")
-
-        with st.expander("Final feature importance plot", expanded=False):
-            show_image_if_exists(
-                "final_feature_importance.png",
-                "Final Random Forest feature importance for the selected best model."
-            )
+    st.subheader("Feature Importance")
+    show_image_if_exists(
+        "final_feature_importance.png",
+        "Final Random Forest feature importance for the selected best model."
+    )
 
 
 models = load_model_pipelines()
@@ -452,20 +364,4 @@ with prediction_tab:
 
 with report_tab:
     st.subheader("Model Reports")
-    st.caption(
-        "Choose one report segment at a time. Each segment contains collapsible tables "
-        "and plots so the page stays easier to scan."
-    )
-
-    selected_report_section = st.radio(
-        "Report segment",
-        options=[
-            "Model Comparison",
-            "Confusion Matrix",
-            "ROC Curves",
-            "Feature Importance"
-        ],
-        horizontal=True
-    )
-
-    render_report_section(selected_report_section)
+    render_report_section()
