@@ -134,11 +134,14 @@ def format_model_option(model_name, best_model_name):
     return model_name
 
 
-def show_image_if_exists(filename, caption):
+def show_image_if_exists(filename, caption, width=None):
     path = FIGURES_DIR / filename
 
     if path.exists():
-        st.image(str(path), caption=caption, use_container_width=True)
+        if width:
+            st.image(str(path), caption=caption, width=width)
+        else:
+            st.image(str(path), caption=caption, use_container_width=True)
     else:
         st.warning(f"Missing report figure: {filename}")
 
@@ -245,15 +248,18 @@ def render_prediction_result(selected_model_name, selected_model, threshold, inp
         st.dataframe(input_df, use_container_width=True, hide_index=True)
 
 
-def render_report_section():
-    st.subheader("Model Comparison")
-    show_dataframe_if_exists("validation_model_comparison.csv")
+def render_report_section(section):
+    if section == "Model Comparison":
+        st.subheader("Model Comparison")
+        show_dataframe_if_exists("validation_model_comparison.csv")
 
-    st.subheader("Feature Importance")
-    show_image_if_exists(
-        "final_feature_importance.png",
-        "Final Random Forest feature importance for the selected best model."
-    )
+    elif section == "Feature Importance":
+        st.subheader("Feature Importance")
+        show_image_if_exists(
+            "final_feature_importance.png",
+            "Final Random Forest feature importance for the selected best model.",
+            width=700
+        )
 
 
 models = load_model_pipelines()
@@ -364,4 +370,14 @@ with prediction_tab:
 
 with report_tab:
     st.subheader("Model Reports")
-    render_report_section()
+    st.caption(
+        "This tab summarizes the model evaluation results and the most influential "
+        "features used by the selected final model."
+    )
+
+    selected_report_section = st.selectbox(
+        "Report segment",
+        options=["Model Comparison", "Feature Importance"]
+    )
+
+    render_report_section(selected_report_section)
