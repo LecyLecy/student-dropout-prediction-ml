@@ -1,27 +1,27 @@
-# Klasifikasi Risiko Dropout Mahasiswa Menggunakan Fitur Enrollment dan Background Awal
+# Student Dropout Risk Classification Using Early Enrollment and Background Features
 
 _Source file: Proposal ML - Group 10(2).docx_
 
 ## I. Problem
 
-Angka dropout di perguruan tinggi berdampak serius pada individu, institusi, dan produktivitas nasional. Sistem deteksi yang hanya mengandalkan nilai akademik semester berjalan sering terlambat karena informasi tersebut baru tersedia setelah mahasiswa mengikuti perkuliahan.
+Higher-education dropout has serious consequences for individuals, institutions, and national productivity. Detection systems that rely only on current-semester grades may respond too late because those signals become available only after students have begun their studies.
 
-Proyek ini menggunakan dataset *Predict Students' Dropout and Academic Success* untuk membangun model klasifikasi biner yang memprediksi risiko dropout menggunakan fitur awal yang lebih masuk akal untuk MVP: informasi enrollment, academic path, dan background mahasiswa.
+This project uses the *Predict Students' Dropout and Academic Success* dataset to build a binary classifier that estimates dropout risk from information suitable for an early-stage MVP: enrollment details, prior academic pathways, and student background.
 
 ## II. Dataset
 
-Dataset yang digunakan:
+Dataset:
 
-[Predict students' dropout and academic success | Kaggle](https://www.kaggle.com/datasets/thedevastator/higher-education-predictors-of-student-retention)
+[Predict Students' Dropout and Academic Success | UCI](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success)
 
-Target asli memiliki tiga kelas: Graduate, Dropout, dan Enrolled. Untuk proyek ini, Enrolled dihapus sehingga tugas model menjadi klasifikasi biner:
+The original target has three classes: Graduate, Dropout, and Enrolled. Enrolled records are removed so the project becomes a binary classification task:
 
 - Graduate = 0
 - Dropout = 1
 
 ## III. Feature Scope
 
-Final MVP menggunakan 10 fitur tetap:
+The final MVP uses a fixed set of ten features:
 
 ```text
 Marital status
@@ -36,11 +36,11 @@ Age at enrollment
 International
 ```
 
-Fitur semester akademik, status administrasi setelah diterima, macroeconomic variables, application mode/order, occupation variables, dan nationality tidak digunakan agar MVP lebih mudah dipahami, lebih ringkas, dan mengurangi risiko leakage.
+Semester academic performance, post-acceptance administrative status, macroeconomic variables, application mode and order, occupation variables, and nationality are excluded. This keeps the MVP concise and understandable while reducing leakage risk.
 
 ## IV. Modeling
 
-Proyek ini membandingkan lima model klasik:
+The project compares five classical models:
 
 1. Logistic Regression
 2. Random Forest
@@ -48,34 +48,36 @@ Proyek ini membandingkan lima model klasik:
 4. Extra Trees
 5. SVM (RBF)
 
-Logistic Regression digunakan sebagai baseline sederhana dan interpretable. Random Forest dipilih sebagai model utama karena menghasilkan trade-off terbaik untuk F1-score dan recall kelas Dropout. Threshold Random Forest diturunkan menjadi `0.40` agar sistem lebih sensitif terhadap mahasiswa berisiko dropout.
+Logistic Regression provides a simple, interpretable baseline. Random Forest is selected as the primary model because it offers the strongest balance of dropout-class F1 score and recall. Its decision threshold is lowered to `0.40` to make the early-warning system more sensitive to at-risk students.
 
 ## V. Preprocessing
 
-Tahapan preprocessing:
+The preprocessing workflow:
 
-- Hapus Enrolled.
-- Encode target menjadi Graduate = 0 dan Dropout = 1.
-- Simpan hanya 10 fitur MVP + Target ke `data/processed/processed.csv`.
-- Gunakan passthrough untuk fitur binary.
-- Gunakan RobustScaler untuk `Age at enrollment`.
-- Gunakan OneHotEncoder untuk fitur nominal dengan cardinality yang masih manageable.
-- Gunakan TargetEncoder untuk Mother's qualification dan Father's qualification.
+- remove Enrolled records;
+- encode the target as Graduate = 0 and Dropout = 1;
+- save the ten MVP features and target to `data/processed/processed.csv`;
+- pass binary features through unchanged;
+- apply `RobustScaler` to `Age at enrollment`;
+- apply `OneHotEncoder` to nominal features with manageable cardinality;
+- apply `TargetEncoder` to Mother's qualification and Father's qualification.
 
-## VI. Metrics Evaluation
+## VI. Evaluation Metrics
 
-Evaluasi menggunakan:
+The evaluation uses:
 
-1. **F1-Score** untuk menyeimbangkan precision dan recall pada kelas risiko dropout.
-2. **Recall** untuk mengurangi mahasiswa berisiko yang tidak terdeteksi.
-3. **Precision** untuk menjaga prediksi risiko tetap tepat sasaran.
-4. **ROC-AUC** untuk mengukur pemisahan kelas berdasarkan probabilitas.
-5. **Confusion Matrix** untuk melihat pola kesalahan prediksi.
+1. **F1 score** to balance precision and recall for the dropout-risk class;
+2. **Recall** to reduce the number of at-risk students the model misses;
+3. **Precision** to measure how often risk flags are correct;
+4. **ROC–AUC** to evaluate probability-based class separation;
+5. **Confusion matrix** to inspect the model's error patterns.
 
 ## VII. Deployment
 
-Model disimpan sebagai pipeline scikit-learn dan digunakan oleh aplikasi Streamlit. User mengisi form berdasarkan 10 fitur MVP, lalu sistem menampilkan prediksi Graduate atau Dropout beserta probabilitasnya.
+The trained model is stored as a scikit-learn pipeline and served through a Streamlit application. A user completes a ten-field student profile, and the system returns an estimated dropout probability and a review-oriented risk signal.
 
-## VIII. References
+The output is intended to support human-led outreach, not to make an automatic academic decision.
 
-Realinho, V., Machado, J., Baptista, L., & Martins, M. V. (2022). *Predict Students' Dropout and Academic Success* [Data set]. UCI Machine Learning Repository. https://doi.org/10.24432/C5MC89
+## VIII. Reference
+
+Realinho, V., Machado, J., Baptista, J., & Martins, M. V. (2022). *Predict Students' Dropout and Academic Success* [Data set]. UCI Machine Learning Repository. https://doi.org/10.24432/C5MC89

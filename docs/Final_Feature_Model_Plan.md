@@ -21,7 +21,7 @@ These features are kept because they are available early, understandable for use
 
 ## Feature Rationale
 
-- `Course` is kept because dropout rates differ clearly across study programs. Programs such as Computer Science, Equinculture, Management Evening Program, Basic Education, and Agronomy show higher dropout risk in the EDA.
+- `Course` is kept because dropout rates differ clearly across study programs. Programs such as Computer Science, Equine Studies, Management Evening Program, Basic Education, and Agronomy show higher dropout risk in the EDA.
 - `Previous qualification` is kept because previous academic background shows meaningful dropout-rate differences across categories.
 - `Mother's qualification` and `Father's qualification` are kept because family educational background shows visible differences in dropout patterns.
 - `Gender` is kept because the EDA shows a clear difference in dropout proportion. This must be interpreted as association, not causation.
@@ -33,7 +33,7 @@ These features are kept because they are available early, understandable for use
 - Semester academic performance variables are excluded because they are not available at the early prediction stage and would create leakage.
 - `Debtor`, `Tuition fees up to date`, and `Scholarship holder` are excluded because they are post-acceptance or administrative status variables.
 - `Unemployment rate`, `Inflation rate`, and `GDP` are excluded from the MVP input because regular users are unlikely to know the correct values. In a production system, these should be retrieved automatically from official statistics.
-- `Application mode` and `Application order` are excluded because they depend on the original dataset admission context and may confuse Indonesian users.
+- `Application mode` and `Application order` are excluded because they depend on the source institution's admission context and may not transfer clearly to other institutions.
 - Occupation variables are excluded to keep the MVP input form shorter and easier to interpret.
 
 ## Model Selection
@@ -75,5 +75,5 @@ EDA -> preprocessing -> model training -> saved model -> Streamlit app
 More detailed reasoning and final conclusions are documented in:
 
 ```text
-docs/Idea_And_Conclussion.md
+docs/Project_Rationale_and_Conclusion.md
 ```
