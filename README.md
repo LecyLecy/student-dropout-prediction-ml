@@ -1,358 +1,174 @@
-# Student Dropout Prediction ML
+# EarlyDrop — Student Dropout Risk Assessment
 
-[Open the Streamlit App](https://student-dropout-prediction-ml-mvp.streamlit.app/)
+[![Open the Streamlit app](https://img.shields.io/badge/Live_app-Streamlit-087f7a?style=for-the-badge&logo=streamlit&logoColor=white)](https://student-dropout-prediction-ml-mvp.streamlit.app/)
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-183b56?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-f4a261?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
 
-[Open the Colab Notebook](https://colab.research.google.com/drive/13XhWSaej3_YDWnldiJMNWOHbAECFpdmb?usp=sharing)
+An end-to-end machine learning project for identifying student dropout risk from information available at or near enrollment. The project covers exploratory analysis, leakage-aware preprocessing, model comparison, recall-first threshold tuning, evaluation, and a polished Streamlit interface.
 
-A machine learning final project for predicting student dropout risk using selected early non-academic and enrollment-related features.
+> This is a screening demonstration, not an automated academic decision system. Every flagged profile requires contextual human review.
 
-The project includes data preprocessing, exploratory data analysis, model training with a fixed MVP feature scope, and a Streamlit-based prediction app.
+## Why this project matters
 
-## Project Overview
+Semester performance can reveal disengagement, but waiting for grades may delay support. EarlyDrop explores whether a small set of enrollment and background factors can produce a useful early signal before semester-level academic data exists.
 
-This project predicts whether a student is more likely to:
+The app is designed for a student-support workflow:
 
-- Graduate
-- Dropout
+- collect ten understandable early-stage inputs;
+- estimate dropout risk with a saved end-to-end pipeline;
+- compare the estimate with a recall-first review threshold;
+- present the result as a review signal rather than a definitive outcome.
 
-The original dataset contains three target classes:
+## Final model
 
-- Graduate
-- Dropout
-- Enrolled
+Five classical classifiers were compared with five-fold stratified cross-validation:
 
-For this project, `Enrolled` records are removed because the final task is binary classification between `Graduate` and `Dropout`.
+| Model | Recall | Precision | F1 score | ROC–AUC |
+|---|---:|---:|---:|---:|
+| Random Forest | 0.684 | 0.614 | **0.647** | **0.770** |
+| Extra Trees | **0.690** | 0.599 | 0.641 | 0.764 |
+| SVM (RBF) | 0.683 | 0.598 | 0.638 | 0.762 |
+| Logistic Regression | 0.666 | 0.610 | 0.637 | 0.759 |
+| Gradient Boosting | 0.562 | **0.665** | 0.609 | 0.766 |
 
-The final MVP uses selected input features to keep the prediction form simple and usable.
+Random Forest was selected for its overall recall–precision balance. Its final decision threshold was lowered from `0.50` to `0.40` to prioritize early detection.
+
+| Final test metric | Result |
+|---|---:|
+| Dropout recall | **0.838** |
+| Precision | 0.537 |
+| F1 score | **0.655** |
+| ROC–AUC | **0.775** |
+| Accuracy | 0.654 |
+
+![Validation metric comparison](reports/figures/validation_metrics_comparison.png)
+
+## Input scope
+
+The deployed model uses ten features that are available early and practical to collect:
+
+1. Marital status
+2. Study program
+3. Previous qualification
+4. Mother's education level
+5. Father's education level
+6. Displaced-student status
+7. Educational special-needs status
+8. Gender
+9. Age at enrollment
+10. International-student status
+
+Semester grades, tuition-payment status, debtor status, and scholarship status are intentionally excluded to keep the prediction stage early and reduce leakage.
+
+## Preprocessing pipeline
+
+Different feature types receive purpose-specific transformations:
+
+- binary flags use passthrough;
+- age at enrollment uses `RobustScaler`;
+- nominal categories use `OneHotEncoder`;
+- high-cardinality parental-education fields use cross-fitted `TargetEncoder`;
+- preprocessing and estimation are stored together as scikit-learn pipelines.
+
+![Final model feature importance](reports/figures/final_feature_importance.png)
+
+Feature importance describes how the model makes predictions; it does not establish causation.
+
+## Repository structure
+
+```text
+student-dropout-prediction-ml/
+|-- .streamlit/             # App theme and runtime configuration
+|-- app/
+|   |-- app.py              # Streamlit application
+|   `-- feature_config.json # English labels and input metadata
+|-- data/
+|   |-- raw/                # Source dataset
+|   `-- processed/          # Modeling and readable datasets
+|-- docs/                   # Scope, rationale, and project documentation
+|-- models/                 # Saved model pipelines and metadata
+|-- notebooks/
+|   |-- 01_eda.ipynb
+|   |-- 02_preprocessing.ipynb
+|   `-- 03_model_training_and_feature_selection.ipynb
+|-- reports/
+|   |-- figures/            # Evaluation visualizations
+|   `-- *.csv               # Model and threshold results
+|-- requirements.txt
+`-- README.md
+```
+
+## Run locally
+
+Python 3.11 is recommended because the saved artifacts were created with the pinned NumPy and scikit-learn versions.
+
+```bash
+git clone https://github.com/LecyLecy/student-dropout-prediction-ml.git
+cd student-dropout-prediction-ml
+
+python -m venv .venv
+```
+
+Activate the environment:
+
+```bash
+# Windows
+.venv\Scripts\activate
+
+# macOS or Linux
+source .venv/bin/activate
+```
+
+Install and run:
+
+```bash
+python -m pip install -r requirements.txt
+python -m streamlit run app/app.py
+```
+
+The app will be available at `http://localhost:8501`.
+
+## Reproduce the analysis
+
+Install the notebook dependencies:
+
+```bash
+python -m pip install -r requirements-dev.txt
+```
+
+Run the notebooks in order:
+
+1. `notebooks/01_eda.ipynb`
+2. `notebooks/02_preprocessing.ipynb`
+3. `notebooks/03_model_training_and_feature_selection.ipynb`
+
+The model-training notebook exports the pipelines, metadata, evaluation tables, and figures used by the app.
 
 ## Dataset
 
-Dataset used:
+The project uses [Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success) from the UCI Machine Learning Repository.
 
-- Higher Education Predictors of Student Retention
-- Predict Students' Dropout and Academic Success
+The original target contains `Graduate`, `Dropout`, and `Enrolled`. `Enrolled` records are removed to define the final binary classification task:
 
-Source:
+- `Graduate = 0`
+- `Dropout = 1`
 
-```text
-https://www.kaggle.com/datasets/thedevastator/higher-education-predictors-of-student-retention
-https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success
-```
+## Responsible use
 
-## Project Structure
+The source data reflects a specific higher-education context. Before any operational use, an institution should:
 
-```text
-student-dropout-prediction-ml
-├── app
-│   ├── app.py
-│   └── feature_config.json
-├── data
-│   ├── raw
-│   │   └── dataset.csv
-│   └── processed
-│       ├── mvp_features_numeric.csv
-│       ├── mvp_features_readable.csv
-│       ├── processed.csv
-│       └── raw_features_readable.csv
-├── models
-│   ├── final_mvp_model.pkl
-│   ├── model_metadata.json
-│   └── mvp_features.json
-├── notebooks
-│   ├── 01_eda.ipynb
-│   ├── 02_preprocessing.ipynb
-│   └── 03_model_training_and_feature_selection.ipynb
-├── reports
-│   └── final_model_comparison.csv
-├── requirements.txt
-├── README.md
-└── .gitignore
-```
+- validate performance on local and recent data;
+- audit error rates across relevant student groups;
+- define a documented human-review process;
+- monitor drift and unintended impacts;
+- use predictions to offer support, never to restrict opportunity.
 
-## Main Workflow
+## Documentation
 
-### 1. Exploratory Data Analysis
+- [Feature and model selection plan](docs/Final_Feature_Model_Plan.md)
+- [Project rationale and conclusion](docs/Project_Rationale_and_Conclusion.md)
+- [Project proposal](docs/Proposal_ML_Group_10.md)
 
-Notebook:
+## Tech stack
 
-```text
-notebooks/01_eda.ipynb
-```
-
-Main steps:
-
-- Load raw dataset
-- Check dataset shape, columns, missing values, and duplicates
-- Save a full-feature readable raw dataset for categorical inspection
-- Remove `Enrolled` records for binary EDA scope
-- Remove academic performance features for early prediction scope
-- Analyze target distribution
-- Analyze continuous and categorical-like features
-- Check feature relationships using visual and non-visual EDA
-
-### 2. Preprocessing
-
-Notebook:
-
-```text
-notebooks/02_preprocessing.ipynb
-```
-
-Main steps:
-
-- Remove `Enrolled` records
-- Remove academic performance features
-- Encode target:
-  - Graduate = 0
-  - Dropout = 1
-- Save processed dataset to:
-
-```text
-data/processed/mvp_features_numeric.csv
-data/processed/processed.csv
-```
-
-### 3. Model Training
-
-Notebook:
-
-```text
-notebooks/03_model_training_and_feature_selection.ipynb
-```
-
-Main steps:
-
-- Load processed dataset
-- Build the final preprocessing pipeline with binary passthrough, `RobustScaler`, `OneHotEncoder`, and `TargetEncoder`
-- Evaluate Logistic Regression, Random Forest, Gradient Boosting, Extra Trees, and SVM with 5-fold stratified cross-validation
-- Tune the decision threshold for Dropout recall
-- Save the threshold-tuned best model, selectable model pipelines, reports, and figures
-
-### 4. Streamlit App
-
-Main app:
-
-```text
-app/app.py
-```
-
-The app:
-
-- Loads selectable trained model pipelines
-- Loads feature configuration
-- Displays user-friendly input labels
-- Converts text input options back into encoded values for the model
-- Marks the selected best model in the model dropdown
-- Predicts Graduate or Dropout risk
-- Shows prediction probabilities and report segments
-
-## Final MVP Features
-
-The MVP uses selected features that are important and practical for user input.
-
-Current MVP features:
-
-```text
-Marital status
-Course
-Previous qualification
-Mother's qualification
-Father's qualification
-Displaced
-Educational special needs
-Gender
-Age at enrollment
-International
-```
-
-Some features were excluded for usability reasons:
-
-- `Unemployment rate` is a macroeconomic indicator and should ideally be filled automatically from official statistics, not manually by users.
-- `Application mode` is based on the original dataset's admission system and may be confusing for Indonesian users.
-- Semester academic performance, debtor status, tuition payment status, and scholarship status are excluded to avoid leakage or post-acceptance/admin inputs.
-
-## Final Models
-
-The final experiment compares:
-
-```text
-Logistic Regression
-Random Forest
-Gradient Boosting
-Extra Trees
-SVM (RBF)
-```
-
-Random Forest is the selected best model and uses a `0.40` Dropout decision threshold to prioritize recall. Logistic Regression remains the interpretable baseline, while Gradient Boosting, Extra Trees, and SVM provide additional classical-model comparison points.
-
-The detailed feature and model rationale is documented in:
-
-```text
-docs/Final_Feature_Model_Plan.md
-docs/Idea_And_Conclussion.md
-```
-
-## Model Artifacts
-
-Saved model files:
-
-```text
-models/final_mvp_model.pkl
-models/model_pipelines.pkl
-models/model_metadata.json
-models/mvp_features.json
-```
-
-These files are included in the repository so the Streamlit app can run without retraining the model.
-
-## Requirements
-
-Main libraries:
-
-```text
-numpy==2.3.5
-pandas==2.3.3
-scikit-learn==1.8.0
-streamlit==1.55.0
-joblib==1.5.2
-matplotlib==3.10.7
-seaborn==0.13.2
-```
-
-The Streamlit deployment uses `requirements.txt`. The saved model artifacts were
-created with NumPy 2.x and scikit-learn 1.8, so these versions are pinned to keep
-model loading consistent on Streamlit Community Cloud.
-
-Install app dependencies using:
-
-```bash
-pip install -r requirements.txt
-```
-
-For notebook development, install the additional Jupyter dependencies:
-
-```bash
-pip install -r requirements-dev.txt
-```
-
-## Setup Instructions
-
-### 1. Check Existing Installation
-
-Make sure Python, Streamlit, Jupyter, and Conda are available.
-
-```bash
-python --version
-streamlit --version
-jupyter --version
-conda --version
-```
-
-### 2. Create Conda Environment
-
-Create a dedicated Conda environment for this project.
-
-```bash
-conda create -n student_dropout_ml python=3.11 -y
-```
-
-Activate the environment.
-
-```bash
-conda activate student_dropout_ml
-```
-
-Install notebook development dependencies.
-
-```bash
-pip install -r requirements-dev.txt
-```
-
-### 3. Register Jupyter Kernel
-
-Register the Conda environment as a Jupyter kernel.
-
-```bash
-python -m ipykernel install --user --name student_dropout_ml --display-name "Python (student_dropout_ml)"
-```
-
-After this, select this kernel in VS Code or Jupyter Notebook:
-
-```text
-Python (student_dropout_ml)
-```
-
-### 4. Run the Streamlit App
-
-Run the app from the project root folder.
-
-Recommended command:
-
-```bash
-conda activate student_dropout_ml
-python -m streamlit run app/app.py
-```
-
-Alternative command:
-
-```bash
-streamlit run app/app.py
-```
-
-If the app opens successfully, Streamlit will show a local URL similar to:
-
-```text
-http://localhost:8501
-```
-
-## Running the Notebooks
-
-Run notebooks in this order:
-
-```text
-1. notebooks/01_eda.ipynb
-2. notebooks/02_preprocessing.ipynb
-3. notebooks/03_model_training_and_feature_selection.ipynb
-```
-
-Make sure the selected kernel is:
-
-```text
-Python (student_dropout_ml)
-```
-
-## Common Issues
-
-### Streamlit uses the wrong Python environment
-
-If Streamlit loads packages from the wrong environment, use:
-
-```bash
-conda activate student_dropout_ml
-python -m streamlit run app/app.py
-```
-
-### Jupyter kernel does not appear
-
-Reinstall the kernel:
-
-```bash
-conda activate student_dropout_ml
-python -m ipykernel install --user --name student_dropout_ml --display-name "Python (student_dropout_ml)"
-```
-
-### Model file is missing
-
-Make sure these files exist:
-
-```text
-models/final_mvp_model.pkl
-models/model_metadata.json
-models/mvp_features.json
-```
-
-If they are missing, rerun:
-
-```text
-notebooks/03_model_training_and_feature_selection.ipynb
-```
+Python · pandas · scikit-learn · joblib · Streamlit · Matplotlib · Seaborn

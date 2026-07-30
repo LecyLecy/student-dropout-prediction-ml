@@ -40,7 +40,7 @@ These features are kept because they are available early, understandable for use
 
 ## Feature Rationale From EDA
 
-`Course` is kept because dropout rates differ clearly across study programs. The EDA shows several programs with higher dropout proportions, including Computer Science, Equinculture, Management Evening Program, Basic Education, and Agronomy.
+`Course` is kept because dropout rates differ clearly across study programs. The EDA shows several programs with higher dropout proportions, including Computer Science, Equine Studies, Management Evening Program, Basic Education, and Agronomy.
 
 `Previous qualification` is kept because students from different previous education backgrounds show different dropout rates. This suggests that pre-university academic background provides useful early signal.
 
@@ -62,7 +62,7 @@ The following variables are excluded from the MVP scope:
 - Application mode
 - Application order
 - Daytime/evening attendance
-- Nacionality
+- Nationality
 - Mother's occupation
 - Father's occupation
 - Unemployment rate
@@ -75,7 +75,7 @@ Semester academic variables are removed because they are not available at the ea
 
 Macroeconomic variables are excluded because regular users are unlikely to know the correct unemployment rate, inflation rate, or GDP for the enrollment context. In a production system, those values should be retrieved automatically from official statistics if they are used.
 
-Application mode and application order are excluded because they are tied to the original dataset's admission system and may confuse users in the Indonesian MVP context.
+Application mode and application order are excluded because they are tied to the source institution's admission system and may not transfer clearly to other institutions.
 
 ## Preprocessing Rationale
 
