@@ -1,5 +1,8 @@
 <div align="center">
-  <img src="./assets/earlydrop-logo.svg" alt="EarlyDrop logo" width="360" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/earlydrop-logo-dark.svg" />
+    <img src="./assets/earlydrop-logo.svg" alt="EarlyDrop logo" width="360" />
+  </picture>
 
   <h3>Early warning for student-support teams, powered by leakage-aware tabular machine learning.</h3>
 
